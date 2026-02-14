@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Music Attendance Management System - Track student attendance efficiently">
+    <title>Music Attendance System</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Excel Export Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Animated Background Musical Notes -->
+    <div class="bg-decoration" aria-hidden="true">
+        <div class="note-float note-1">♪</div>
+        <div class="note-float note-2">♫</div>
+        <div class="note-float note-3">♩</div>
+        <div class="note-float note-4">♬</div>
+        <div class="note-float note-5">♪</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>Music Attendance System</h1>
+            <button id="toggleMode" class="mode-toggle" aria-label="Toggle dark mode">
+                <span class="mode-icon">🌙</span>
+                <span class="mode-text">Dark</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav" role="navigation">
+        <button class="nav-btn active" onclick="showSection('homeSection')" data-section="home" aria-label="Home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">Home</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('classesSection')" data-section="classes" aria-label="Classes">
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">Classes</span>
+        </button>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="section active" aria-label="Home">
+            <div class="home-hero">
+                <div class="profile-card">
+                    <div class="profile-image-wrapper">
+                        <img id="homePhoto" src="photo.jpeg" alt="Music Lecturer Portrait" loading="lazy">
+                        <div class="profile-glow"></div>
+                    </div>
+                    <div class="profile-content">
+                        <h2 class="profile-title">Welcome to Music Attendance</h2>
+                        <div class="profile-divider"></div>
+                        <p class="profile-description">
+                            This comprehensive system helps track student attendance, monitor practice sessions, 
+                            and evaluate performance readiness. Navigate through classes to record attendance, 
+                            edit student information, and generate detailed reports for academic excellence.
+                        </p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">100</div>
+                                <div class="stat-label">Students</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">Classes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">∞</div>
+                                <div class="stat-label">Harmony</div>
+                            </div>
+                        </div>
+                        <button class="cta-button" onclick="showSection('classesSection')">
+                            Start Taking Attendance
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLASSES SECTION -->
+        <section id="classesSection" class="section" aria-label="Select Class">
+            <h2 class="section-title">Select a Class</h2>
+            <div class="class-grid">
+                <button class="class-card" onclick="openAttendance('Class 1')" aria-label="Open Class 1">
+                    <span class="class-number">1</span>
+                    <span class="class-label">Class One</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 2')" aria-label="Open Class 2">
+                    <span class="class-number">2</span>
+                    <span class="class-label">Class Two</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 3')" aria-label="Open Class 3">
+                    <span class="class-number">3</span>
+                    <span class="class-label">Class Three</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 4')" aria-label="Open Class 4">
+                    <span class="class-number">4</span>
+                    <span class="class-label">Class Four</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 5')" aria-label="Open Class 5">
+                    <span class="class-number">5</span>
+                    <span class="class-label">Class Five</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 6')" aria-label="Open Class 6">
+                    <span class="class-number">6</span>
+                    <span class="class-label">Class Six</span>
+                </button>
+                <button class="class-card" onclick="openAttendance('Class 7')" aria-label="Open Class 7">
+                    <span class="class-number">7</span>
+                    <span class="class-label">Class Seven</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ATTENDANCE SECTION -->
+        <section id="attendanceSection" class="section" aria-label="Attendance Management">
+            <div class="section-header">
+                <button class="back-button" onclick="showSection('classesSection')" aria-label="Back to Classes">
+                    <span class="back-arrow">←</span>
+                    <span>Back to Classes</span>
+                </button>
+                <h2 id="attendanceTitle" class="section-title"></h2>
+            </div>
+
+            <div class="attendance-controls">
+                <div class="control-group">
+                    <label for="searchInput" class="control-label">
+                        <span class="label-icon">🔍</span>
+                        Search Student
+                    </label>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input"
+                        placeholder="Search by name or register number..." 
+                        onkeyup="debouncedFilter()"
+                        aria-label="Search students"
+                    >
+                </div>
+                
+                <div class="control-group">
+                    <label for="attendanceDate" class="control-label">
+                        <span class="label-icon">📅</span>
+                        Select Date
+                    </label>
+                    <input 
+                        type="date" 
+                        id="attendanceDate" 
+                        class="date-input"
+                        aria-label="Select attendance date"
+                    >
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="attendanceTable" class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th class="th-register">Register No.</th>
+                            <th class="th-name">Student Name</th>
+                            <th class="th-status">100% Present</th>
+                            <th class="th-status">50% Present</th>
+                            <th class="th-status">Absent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated dynamically by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="saveAttendance()">
+                    <span class="btn-icon">💾</span>
+                    Save Attendance
+                </button>
+                <button class="btn btn-secondary" onclick="exportToExcel()">
+                    <span class="btn-icon">📥</span>
+                    Download Excel
+                </button>
+            </div>
+        </section>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Music Attendance System © 2026 | Made with ♪ for Education</p>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
